@@ -2,6 +2,7 @@
 library(tidyverse)
 library(e1071)
 library(cumstats)
+library(patchwork)
 
 #Task 1 - describe the population distribution
 
@@ -289,19 +290,37 @@ beta.fourth.summary <- tibble(beta.fourth.sample) %>%
 cum.mean <- cummean(beta.first.sample) #cumulative mean
 cum.var <- cumvar(beta.first.sample) #cumulative variance
 cum.skew <- cumskew(beta.first.sample) #cumulative skewness
-cum.kurt <- cumkurt(beta.first.sample) #cumulative kurtosis
+cum.kurt <- cumkurt(beta.first.sample) -3 #cumulative kurtosis
 
-ggplot(data = tibble(beta.first.sample))+ #plot for cumulative mean
-  geom_line(aes(x=1:500, y = cum.mean), na.rm = T)
+mean.plot <- ggplot(data = tibble(beta.first.sample))+ #plot for cumulative mean
+  geom_line(aes(x=1:500, y = cum.mean), na.rm = T)+
+  theme_bw()+
+  geom_hline(yintercept=mean.first)+  #add true value from task one
+  labs(x = "Sample size",
+       y = "Cumulative mean")
 
-ggplot(data = tibble(beta.first.sample))+ #plot for cumulative variance
-  geom_line(aes(x=1:500, y = cum.var), na.rm = T)
+var.plot <- ggplot(data = tibble(beta.first.sample))+ #plot for cumulative variance
+  geom_line(aes(x=1:500, y = cum.var), na.rm = T)+
+  theme_bw()+
+  geom_hline(yintercept=var.first)+  #add true value from task one
+  labs(x = "Sample size",
+       y = "Cumulative variance")
 
-ggplot(data = tibble(beta.first.sample))+ #plot for cumulative skewness
-  geom_line(aes(x=1:500, y = cum.skew), na.rm = T)
+skew.plot <- ggplot(data = tibble(beta.first.sample))+ #plot for cumulative skewness
+  geom_line(aes(x=1:500, y = cum.skew), na.rm = T)+
+  theme_bw()+
+  geom_hline(yintercept=skew.first)+  #add true value from task one
+  labs(x = "Sample size",
+       y = "Cumulative skewness")
 
-ggplot(data = tibble(beta.first.sample))+  #plot for cumulative kurtosis
-  geom_line(aes(x=1:500, y = cum.kurt), na.rm = T)
+kurt.plot <- ggplot(data = tibble(beta.first.sample))+  #plot for cumulative kurtosis
+  geom_line(aes(x=1:500, y = cum.kurt), na.rm = T)+
+  theme_bw()+
+  geom_hline(yintercept=kurt.first)+  #add true value from task one
+  labs(x = "Sample size",
+       y = "Cumulative kurtosis")
+
+#combine the plots
+combined.plots <- (mean.plot + var.plot)/(skew.plot+kurt.plot)
 
 #do the loop iteration
-for (i in )
