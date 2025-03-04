@@ -1,6 +1,7 @@
 #load libraries
 library(tidyverse)
 library(e1071)
+library(cumstats)
 
 #Task 1 - describe the population distribution
 
@@ -141,11 +142,11 @@ stats.fourth.tibble <- tibble(mean = mean.fourth,
 beta.moment <- function(alpha, beta, k, centered){
   moment <- 0
   if (centered == F){ #uncentered moments
-    moment <- integrate(function(x){x^k*dnorm(x, mean=alpha, sd=beta)},
-              lower = -Inf, upper = Inf)
+    moment <- integrate(function(x){x^k*dbeta()},
+              lower = 0, upper = 1)
   }else{ #centered moments
     moment <- integrate(function(x){(x- dnorm(x, mean=alpha, sd=beta))^k},
-                        lower = -Inf, upper = Inf)
+                        lower = 0, upper = 1)
   }
   return(moment)
 }
@@ -282,3 +283,25 @@ beta.fourth.summary <- tibble(beta.fourth.sample) %>%
             variance = var(beta.fourth.sample),
             skewness = skewness(beta.fourth.sample),
             excess_kurtosis = kurtosis(beta.fourth.sample))
+
+#task four
+#compute cumulative summaries for beta(2,5)
+cum.mean <- cummean(beta.first.sample) #cumulative mean
+cum.var <- cumvar(beta.first.sample) #cumulative variance
+cum.skew <- cumskew(beta.first.sample) #cumulative skewness
+cum.kurt <- cumkurt(beta.first.sample) #cumulative kurtosis
+
+ggplot(data = tibble(beta.first.sample))+ #plot for cumulative mean
+  geom_line(aes(x=1:500, y = cum.mean), na.rm = T)
+
+ggplot(data = tibble(beta.first.sample))+ #plot for cumulative variance
+  geom_line(aes(x=1:500, y = cum.var), na.rm = T)
+
+ggplot(data = tibble(beta.first.sample))+ #plot for cumulative skewness
+  geom_line(aes(x=1:500, y = cum.skew), na.rm = T)
+
+ggplot(data = tibble(beta.first.sample))+  #plot for cumulative kurtosis
+  geom_line(aes(x=1:500, y = cum.kurt), na.rm = T)
+
+#do the loop iteration
+for (i in )
