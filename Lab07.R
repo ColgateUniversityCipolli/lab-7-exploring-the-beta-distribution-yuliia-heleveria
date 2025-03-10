@@ -143,19 +143,49 @@ stats.fourth.tibble <- tibble(mean = mean.fourth,
 beta.moment <- function(alpha, beta, k, centered){
   moment <- 0
   if (centered == F){ #uncentered moments
-    moment <- integrate(function(x){x^k*dbeta()},
-              lower = 0, upper = 1)
+    moment <- integrate(function(x){x^k*dbeta(x, alpha, beta)},
+              lower = 0, upper = 1)$value
   }else{ #centered moments
-    moment <- integrate(function(x){(x- dnorm(x, mean=alpha, sd=beta))^k},
-                        lower = 0, upper = 1)
+    mu <- integrate(function(x){x*dbeta(x, alpha, beta)},
+                    lower = 0, upper = 1)$value
+    moment <- integrate(function(x){(x- mu)^k *dbeta(x, alpha, beta)},
+                        lower = 0, upper = 1)$value
   }
   return(moment)
 }
 
 #confirm the function is working by computing population-level characteristics
-beta.moment(2, 5, 20, T)
-beta.moment(2, 5, 20, F)
-beta.moment(5, 5, 1000, F)
+#compute for beta(2, 5) - values matched
+beta.first.mean <- beta.moment(alpha.first, beta.first, 1, F) #compute mean
+beta.first.var <- beta.moment(alpha.first, beta.first, 2, T) #compute variance
+beta.first.skew <- beta.moment(alpha.first, beta.first, 3, T)/
+  (beta.moment(alpha.first, beta.first, 2, T))^(3/2) #compute skewness
+beta.first.kurt <- beta.moment(alpha.first, beta.first, 4, T)/
+  (beta.moment(alpha.first, beta.first, 2, T))^(2) - 3 #compute excess kurtosis
+
+#compute for beta(5, 5) - values matched
+beta.second.mean <- beta.moment(alpha.second, beta.second, 1, F) #compute mean
+beta.second.var <- beta.moment(alpha.second, beta.second, 2, T) #compute variance
+beta.second.skew <- beta.moment(alpha.second, beta.second, 3, T)/
+  (beta.moment(alpha.second, beta.second, 2, T))^(3/2) #compute skewness
+beta.second.kurt <- beta.moment(alpha.second, beta.second, 4, T)/
+  (beta.moment(alpha.second, beta.second, 2, T))^(2) - 3 #compute excess kurtosis
+
+#compute for beta(5, 2) - values matched
+beta.third.mean <- beta.moment(alpha.third, beta.third, 1, F) #compute mean
+beta.third.var <- beta.moment(alpha.third, beta.third, 2, T) #compute variance
+beta.third.skew <- beta.moment(alpha.third, beta.third, 3, T)/
+  (beta.moment(alpha.third, beta.third, 2, T))^(3/2) #compute skewness
+beta.third.kurt <- beta.moment(alpha.third, beta.third, 4, T)/
+  (beta.moment(alpha.third, beta.third, 2, T))^(2) - 3 #compute excess kurtosis
+
+#compute for beta(0.50, 0.50) - values matched
+beta.fourth.mean <- beta.moment(alpha.fourth, beta.fourth, 1, F) #compute mean
+beta.fourth.var <- beta.moment(alpha.fourth, beta.fourth, 2, T) #compute variance
+beta.fourth.skew <- beta.moment(alpha.fourth, beta.fourth, 3, T)/
+  (beta.moment(alpha.fourth, beta.fourth, 2, T))^(3/2) #compute skewness
+beta.fourth.kurt <- beta.moment(alpha.fourth, beta.fourth, 4, T)/
+  (beta.moment(alpha.fourth, beta.fourth, 2, T))^(2) - 3 #compute excess kurtosis
 
 #Task 3
 set.seed(7272) #set seed
@@ -323,4 +353,10 @@ kurt.plot <- ggplot(data = tibble(beta.first.sample))+  #plot for cumulative kur
 #combine the plots
 combined.plots <- (mean.plot + var.plot)/(skew.plot+kurt.plot)
 
-#do the loop iteration
+#do the loop iteration to simulate new data
+for (i in 2:50){
+  set.seed(7272+i) #set the seed
+  beta.sample <- rbeta(n = sample.size,  # sample size
+                             shape1 = alpha.first,   # alpha parameter
+                             shape2 = beta.first)    # beta parameter
+}
