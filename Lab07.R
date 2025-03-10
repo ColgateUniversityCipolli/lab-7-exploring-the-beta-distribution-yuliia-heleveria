@@ -1,3 +1,9 @@
+#fix task 3 based on homework feedback
+#adds comments to code
+#start the writeup
+#check that plots in 4 are correct
+#rerun R and check that everything is correct
+
 #load libraries
 library(tidyverse)
 library(e1071)
@@ -359,4 +365,24 @@ for (i in 2:50){
   beta.sample <- rbeta(n = sample.size,  # sample size
                              shape1 = alpha.first,   # alpha parameter
                              shape2 = beta.first)    # beta parameter
+  new.data <- tibble( #create tibble with cumulative summaries
+    index = 1:sample.size,
+    mean = cummean(beta.sample),
+    variance = cumvar(beta.sample),
+    skewness = cumskew(beta.sample),
+    kurtosis = cumkurt(beta.sample) -3
+  )
+
+  #Add new line for cumulative statistics
+  mean.plot <- mean.plot +
+    geom_line(data = new.data, aes(x=index, y= mean), color =i, na.rm = T)
+  var.plot <- var.plot +
+    geom_line(data = new.data, aes(x=index, y= variance), color =i, na.rm = T)
+  skew.plot <- skew.plot +
+    geom_line(data = new.data, aes(x=index, y= skewness), color =i, na.rm = T)
+  kurt.plot <- kurt.plot +
+    geom_line(data = new.data, aes(x=index, y= kurtosis), color =i, na.rm = T)
 }
+#combine all new plots together
+combined.plots.new.sample <- (mean.plot + var.plot)/(skew.plot+kurt.plot)
+
