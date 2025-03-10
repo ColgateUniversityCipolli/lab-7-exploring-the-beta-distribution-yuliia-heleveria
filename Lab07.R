@@ -3,7 +3,7 @@
 #start the writeup
 #check that plots in 4 are correct
 #rerun R and check that everything is correct
-#add legend for density and complete last 3 graphs
+#kurtosis looks weird
 
 #load libraries
 library(tidyverse)
@@ -417,11 +417,47 @@ beta.tibble <- tibble(
   kurtosis = kurt.vector)
 
 #plot histogram for each statistics
+#plot a histogram for mean
 mean.hist <- ggplot()+
   geom_histogram(data = beta.tibble, aes(x= mean, y = ..density..),
-                 fill = "skyblue", color = "black")+
-  theme_bw()+
-  geom_density(data = beta.tibble, aes (x= mean), color = "red")+
-  labs(x = "Mean",
+                 fill = "lightblue", color = "black")+ #create a histogram
+  theme_bw()+ #put white background
+  geom_density(data = beta.tibble, aes (x= mean, color = "Density"))+ #create a density line
+  scale_color_manual(name = "Legend", values = c("Density" = "red")) + #create a legend
+  labs(x = "Mean", 
        y = "Density",
        title = "Sampling Distibution of Mean")
+  
+#plot a histogram for variance
+var.hist <- ggplot()+
+  geom_histogram(data = beta.tibble, aes(x= variance, y = ..density..),
+                 fill = "lightblue", color = "black")+ #create a histogram
+  theme_bw()+ #put white background
+  geom_density(data = beta.tibble, aes (x= variance, color = "Density"))+ #create a density line
+  scale_color_manual(name = "Legend", values = c("Density" = "red")) + #create a legend
+  labs(x = "Variance", 
+       y = "Density",
+       title = "Sampling Distibution of Variance")
+
+#plot a histogram for skewness
+skew.hist <- ggplot()+
+  geom_histogram(data = beta.tibble, aes(x= skewness, y = ..density..),
+                 fill = "lightblue", color = "black")+ #create a histogram
+  theme_bw()+ #put white background
+  geom_density(data = beta.tibble, aes (x= skewness, color = "Density"))+ #create a density line
+  scale_color_manual(name = "Legend", values = c("Density" = "red")) + #create a legend
+  labs(x = "Skewness", 
+       y = "Density",
+       title = "Sampling Distibution of Skewness")
+
+#plot a histogram for kurtosis
+kurt.hist <- ggplot()+
+  geom_histogram(data = beta.tibble, aes(x= kurtosis, y = ..density..),
+                 fill = "lightblue", color = "black")+ #create a histogram
+  theme_bw()+ #put white background
+  geom_density(data = beta.tibble, aes (x= kurtosis, color = "Density"))+ #create a density line
+  scale_color_manual(name = "Legend", values = c("Density" = "red")) + #create a legend
+  labs(x = "Kurtosis", 
+       y = "Density",
+       title = "Sampling Distibution of Kurtosis")
+
