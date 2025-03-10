@@ -3,6 +3,7 @@
 #start the writeup
 #check that plots in 4 are correct
 #rerun R and check that everything is correct
+#add legend for density and complete last 3 graphs
 
 #load libraries
 library(tidyverse)
@@ -386,3 +387,41 @@ for (i in 2:50){
 #combine all new plots together
 combined.plots.new.sample <- (mean.plot + var.plot)/(skew.plot+kurt.plot)
 
+#Task 5
+num.iterations <- 1000
+#vectors to store statistics of interest
+mean.vector = rep(NA, num.iterations)
+var.vector = rep(NA, num.iterations)
+skew.vector = rep(NA, num.iterations)
+kurt.vector = rep(NA, num.iterations)
+
+#do a for loop for 1000 samples
+for (i in 1:num.iterations){
+  set.seed(7272+i) #set seed to work with same samples
+  #simulate new distribution
+  beta.sample <- rbeta(n = sample.size,  # sample size
+                       shape1 = alpha.first,   # alpha parameter
+                       shape2 = beta.first)    # beta parameter
+  #compute statistics for the new distribution
+  mean.vector[i] <- mean(beta.sample)
+  var.vector[i] <-var(beta.sample)
+  skew.vector[i] <- skewness(beta.sample)
+  kurt.vector[i] <- kurtosis(beta.sample)
+}
+
+#create tibble to plot the data
+beta.tibble <- tibble(
+  mean = mean.vector,
+  variance = var.vector,
+  skewness = skew.vector,
+  kurtosis = kurt.vector)
+
+#plot histogram for each statistics
+mean.hist <- ggplot()+
+  geom_histogram(data = beta.tibble, aes(x= mean, y = ..density..),
+                 fill = "skyblue", color = "black")+
+  theme_bw()+
+  geom_density(data = beta.tibble, aes (x= mean), color = "red")+
+  labs(x = "Mean",
+       y = "Density",
+       title = "Sampling Distibution of Mean")
