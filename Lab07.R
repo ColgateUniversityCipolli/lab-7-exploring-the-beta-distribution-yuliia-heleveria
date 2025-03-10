@@ -1,25 +1,36 @@
 #fix task 3 based on homework feedback
-#adds comments to code
 #start the writeup
 #check that plots in 4 are correct
 #rerun R and check that everything is correct
 #kurtosis looks weird
 
-#load libraries
+################################################################################
+# LAB 7 R CODE
+# YULIIA HELEVERIA
+# MATH 240 - SPRING 2025
+################################################################################
+
+################################################################################
+# Load Libraries
+################################################################################
 library(tidyverse)
 library(e1071)
 library(cumstats)
 library(patchwork)
 
-#Task 1 - describe the population distribution
+################################################################################
+# TASK 1: describe the population distribution
+################################################################################
 
-#first case 
+################################################################################
+#first case - beta(2, 5)
+################################################################################
 alpha.first <- 2 #define alpha and beta
 beta.first <- 5
 
 #plot the distribution
 first.dist <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
-  mutate(beta.pdf = dbeta(x, alpha.first, beta.first))                      # compute the beta PDF
+  mutate(beta.pdf = dbeta(x, alpha.first, beta.first))          # compute the beta PDF
 
 ggplot(data= first.dist)+                                              # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(2,5)")) +                 # plot beta dist
@@ -32,29 +43,32 @@ ggplot(data= first.dist)+                                              # specify
 
 
 #calculate mean, variance, skewness, excess kurtosis
-mean.first <- alpha.first/(alpha.first+beta.first)
-var.first <- (alpha.first*beta.first)/((alpha.first+beta.first)^2*
+mean.first <- alpha.first/(alpha.first+beta.first) #calculate mean
+var.first <- (alpha.first*beta.first)/((alpha.first+beta.first)^2* #calculate variance
                                          (alpha.first+beta.first+1)) 
-skew.first <- (2*(beta.first-alpha.first)*sqrt(alpha.first+beta.first+1))/
+skew.first <- (2*(beta.first-alpha.first)*sqrt(alpha.first+beta.first+1))/ #calculate skewness
   ((alpha.first+beta.first+2)*sqrt(alpha.first*beta.first))
-kurt.first <- (6*((alpha.first-beta.first)^2*(alpha.first+beta.first+1) - 
+kurt.first <- (6*((alpha.first-beta.first)^2*(alpha.first+beta.first+1) - #calculate kurtosis
                     alpha.first*beta.first*(alpha.first+beta.first+2)))/
   (alpha.first*beta.first*(alpha.first+beta.first+2)*(alpha.first+beta.first+3))
+
 #compute the table for these variables
-stats.first.tibble <- tibble(mean = mean.first,
+stats.first.tibble <- tibble(mean = mean.first, #input calculated variables into the table
                              variance = var.first,
                              skewness = skew.first,
                              excess_kurtosis = kurt.first)
 
-#second case
+################################################################################
+#second case - beta(5, 5)
+################################################################################
 alpha.second <- 5 #define alpha and beta
 beta.second <- 5
 
 #plot the distribution
 second.dist <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
-  mutate(beta.pdf = dbeta(x, alpha.second, beta.second))                      # compute the beta PDF
+  mutate(beta.pdf = dbeta(x, alpha.second, beta.second))         # compute the beta PDF
 
-ggplot(data= second.dist)+                                              # specify data
+ggplot(data= second.dist)+                                            # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(5,5)")) +                 # plot beta dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
@@ -65,27 +79,29 @@ ggplot(data= second.dist)+                                              # specif
 
 
 #calculate mean, variance, skewness, excess kurtosis
-mean.second <- alpha.second/(alpha.second+beta.second)
-var.second <- (alpha.second*beta.second)/((alpha.second+beta.second)^2*
+mean.second <- alpha.second/(alpha.second+beta.second) #calculate mean
+var.second <- (alpha.second*beta.second)/((alpha.second+beta.second)^2* #calculate variance
                                          (alpha.second+beta.second+1)) 
-skew.second <- (2*(beta.second-alpha.second)*sqrt(alpha.second+beta.second+1))/
+skew.second <- (2*(beta.second-alpha.second)*sqrt(alpha.second+beta.second+1))/ #calculate skewness
   ((alpha.second+beta.second+2)*sqrt(alpha.second*beta.second))
-kurt.second <- (6*((alpha.second-beta.second)^2*(alpha.second+beta.second+1) - 
+kurt.second <- (6*((alpha.second-beta.second)^2*(alpha.second+beta.second+1) - #calculate kurtosis
                     alpha.second*beta.second*(alpha.second+beta.second+2)))/
   (alpha.second*beta.second*(alpha.second+beta.second+2)*(alpha.second+beta.second+3))
 #compute the table for these variables
-stats.second.tibble <- tibble(mean = mean.second,
+stats.second.tibble <- tibble(mean = mean.second, #input calculated variables into the table
                              variance = var.second,
                              skewness = skew.second,
                              excess_kurtosis = kurt.second)
 
-#third case
+################################################################################
+#third case - beta(5, 2)
+################################################################################
 alpha.third <- 5 #define alpha and beta
 beta.third <- 2
 
 #plot the distribution
 third.dist <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
-  mutate(beta.pdf = dbeta(x, alpha.third, beta.third))                      # compute the beta PDF
+  mutate(beta.pdf = dbeta(x, alpha.third, beta.third))          # compute the beta PDF
 
 ggplot(data= third.dist)+                                              # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(5,2)")) +                 # plot beta dist
@@ -98,30 +114,32 @@ ggplot(data= third.dist)+                                              # specify
 
 
 #calculate mean, variance, skewness, excess kurtosis
-mean.third <- alpha.third/(alpha.third+beta.third)
-var.third <- (alpha.third*beta.third)/((alpha.third+beta.third)^2*
+mean.third <- alpha.third/(alpha.third+beta.third) #calculate mean
+var.third <- (alpha.third*beta.third)/((alpha.third+beta.third)^2* #calculate variance
                                             (alpha.third+beta.third+1)) 
-skew.third <- (2*(beta.third-alpha.third)*sqrt(alpha.third+beta.third+1))/
+skew.third <- (2*(beta.third-alpha.third)*sqrt(alpha.third+beta.third+1))/ #calculate skewness
   ((alpha.third+beta.third+2)*sqrt(alpha.third*beta.third))
-kurt.third <- (6*((alpha.third-beta.third)^2*(alpha.third+beta.third+1) - 
+kurt.third <- (6*((alpha.third-beta.third)^2*(alpha.third+beta.third+1) - #calculate kurtosis
                      alpha.third*beta.third*(alpha.third+beta.third+2)))/
   (alpha.third*beta.third*(alpha.third+beta.third+2)*(alpha.third+beta.third+3))
 #compute the table for these variables
-stats.third.tibble <- tibble(mean = mean.third,
+stats.third.tibble <- tibble(mean = mean.third, #input calculated variables into the table
                               variance = var.third,
                               skewness = skew.third,
                               excess_kurtosis = kurt.third)
 
-#fourth case
+################################################################################
+#fourth case - beta(0.50, 0.50)
+################################################################################
 alpha.fourth <- 0.5 #define alpha and beta
 beta.fourth <- 0.5
 
 #plot the distribution
 fourth.dist <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
-  mutate(beta.pdf = dbeta(x, alpha.fourth, beta.fourth))                      # compute the beta PDF
+  mutate(beta.pdf = dbeta(x, alpha.fourth, beta.fourth))         # compute the beta PDF
 
-ggplot(data= fourth.dist)+                                              # specify data
-  geom_line(aes(x=x, y=beta.pdf, color="Beta(0.50,0.50)")) +                 # plot beta dist
+ggplot(data= fourth.dist)+                                             # specify data
+  geom_line(aes(x=x, y=beta.pdf, color="Beta(0.50,0.50)")) +           # plot beta dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
   xlab("x")+                                                           # label x axis
@@ -131,22 +149,25 @@ ggplot(data= fourth.dist)+                                              # specif
 
 
 #calculate mean, variance, skewness, excess kurtosis
-mean.fourth <- alpha.fourth/(alpha.fourth+beta.fourth)
-var.fourth <- (alpha.fourth*beta.fourth)/((alpha.fourth+beta.fourth)^2*
+mean.fourth <- alpha.fourth/(alpha.fourth+beta.fourth) #calculate mean
+var.fourth <- (alpha.fourth*beta.fourth)/((alpha.fourth+beta.fourth)^2* #calculate variance
                                          (alpha.fourth+beta.fourth+1)) 
-skew.fourth <- (2*(beta.fourth-alpha.fourth)*sqrt(alpha.fourth+beta.fourth+1))/
+skew.fourth <- (2*(beta.fourth-alpha.fourth)*sqrt(alpha.fourth+beta.fourth+1))/ #calculate skewness
   ((alpha.fourth+beta.fourth+2)*sqrt(alpha.fourth*beta.fourth))
-kurt.fourth <- (6*((alpha.fourth-beta.fourth)^2*(alpha.fourth+beta.fourth+1) - 
+kurt.fourth <- (6*((alpha.fourth-beta.fourth)^2*(alpha.fourth+beta.fourth+1) - #calculate kurtosis
                     alpha.fourth*beta.fourth*(alpha.fourth+beta.fourth+2)))/
   (alpha.fourth*beta.fourth*(alpha.fourth+beta.fourth+2)*(alpha.fourth+beta.fourth+3))
 #compute the table for these variables
-stats.fourth.tibble <- tibble(mean = mean.fourth,
+stats.fourth.tibble <- tibble(mean = mean.fourth, #input calculated variables into the table
                              variance = var.fourth,
                              skewness = skew.fourth,
                              excess_kurtosis = kurt.fourth)
 
-#Task 2: compute the moments
-#function that computes centered and uncentered moments
+################################################################################
+# TASK 2: compute the moments
+################################################################################
+
+#function that computes kth centered and uncentered moment for continous distribution
 beta.moment <- function(alpha, beta, k, centered){
   moment <- 0
   if (centered == F){ #uncentered moments
@@ -154,11 +175,11 @@ beta.moment <- function(alpha, beta, k, centered){
               lower = 0, upper = 1)$value
   }else{ #centered moments
     mu <- integrate(function(x){x*dbeta(x, alpha, beta)},
-                    lower = 0, upper = 1)$value
+                    lower = 0, upper = 1)$value #calculate mu for intergration
     moment <- integrate(function(x){(x- mu)^k *dbeta(x, alpha, beta)},
                         lower = 0, upper = 1)$value
   }
-  return(moment)
+  return(moment) #return the calculated moment
 }
 
 #confirm the function is working by computing population-level characteristics
@@ -194,10 +215,14 @@ beta.fourth.skew <- beta.moment(alpha.fourth, beta.fourth, 3, T)/
 beta.fourth.kurt <- beta.moment(alpha.fourth, beta.fourth, 4, T)/
   (beta.moment(alpha.fourth, beta.fourth, 2, T))^(2) - 3 #compute excess kurtosis
 
-#Task 3
+################################################################################
+# TASK 3: do data summaries help?
+################################################################################
 set.seed(7272) #set seed
 
-#first distribution 
+################################################################################
+#first case - beta(2, 5)
+################################################################################
 sample.size <- 500 # Specify sample details
 beta.first.sample <- rbeta(n = sample.size,  # sample size
                      shape1 = alpha.first,   # alpha parameter
@@ -229,7 +254,9 @@ beta.first.summary <- tibble(beta.first.sample) %>%
             skewness = skewness(beta.first.sample),
             excess_kurtosis = kurtosis(beta.first.sample))
 
-#second distribution
+################################################################################
+#second case - beta(5, 5)
+################################################################################
 beta.second.sample <- rbeta(n = sample.size,  # sample size
                            shape1 = alpha.second,   # alpha parameter
                            shape2 = beta.second)    # beta parameter
@@ -260,7 +287,9 @@ beta.second.summary <- tibble(beta.second.sample) %>%
             skewness = skewness(beta.second.sample),
             excess_kurtosis = kurtosis(beta.second.sample))
 
-#third distribution
+################################################################################
+#third case - beta(5, 2)
+################################################################################
 beta.third.sample <- rbeta(n = sample.size,  # sample size
                             shape1 = alpha.third,   # alpha parameter
                             shape2 = beta.third)    # beta parameter
@@ -291,7 +320,9 @@ beta.third.summary <- tibble(beta.third.sample) %>%
             skewness = skewness(beta.third.sample),
             excess_kurtosis = kurtosis(beta.third.sample))
 
-#fourth distribution
+################################################################################
+#fourth case - beta(0.50, 0.50)
+################################################################################
 beta.fourth.sample <- rbeta(n = sample.size,  # sample size
                             shape1 = alpha.fourth,   # alpha parameter
                             shape2 = beta.fourth)    # beta parameter
@@ -322,7 +353,9 @@ beta.fourth.summary <- tibble(beta.fourth.sample) %>%
             skewness = skewness(beta.fourth.sample),
             excess_kurtosis = kurtosis(beta.fourth.sample))
 
-#task four
+################################################################################
+# TASK 4: is sample size important?
+################################################################################
 #compute cumulative summaries for beta(2,5)
 cum.mean <- cummean(beta.first.sample) #cumulative mean
 cum.var <- cumvar(beta.first.sample) #cumulative variance
@@ -374,7 +407,7 @@ for (i in 2:50){
     kurtosis = cumkurt(beta.sample) -3
   )
 
-  #Add new line for cumulative statistics
+  #Add new line for cumulative statistics of mean, varinace, skewness, and kurtosis
   mean.plot <- mean.plot +
     geom_line(data = new.data, aes(x=index, y= mean), color =i, na.rm = T)
   var.plot <- var.plot +
@@ -387,30 +420,32 @@ for (i in 2:50){
 #combine all new plots together
 combined.plots.new.sample <- (mean.plot + var.plot)/(skew.plot+kurt.plot)
 
-#Task 5
-num.iterations <- 1000
-#vectors to store statistics of interest
+################################################################################
+# TASK 5: how can we model the variation?
+################################################################################
+num.iterations <- 1000 #number of times we will iterate
+#empty vectors to store statistics of interest
 mean.vector = rep(NA, num.iterations)
 var.vector = rep(NA, num.iterations)
 skew.vector = rep(NA, num.iterations)
 kurt.vector = rep(NA, num.iterations)
 
-#do a for loop for 1000 samples
+#compute statistics for 1000 samples 
 for (i in 1:num.iterations){
   set.seed(7272+i) #set seed to work with same samples
   #simulate new distribution
-  beta.sample <- rbeta(n = sample.size,  # sample size
+  beta.sample <- rbeta(n = sample.size,        # sample size
                        shape1 = alpha.first,   # alpha parameter
                        shape2 = beta.first)    # beta parameter
   #compute statistics for the new distribution
-  mean.vector[i] <- mean(beta.sample)
-  var.vector[i] <-var(beta.sample)
-  skew.vector[i] <- skewness(beta.sample)
-  kurt.vector[i] <- kurtosis(beta.sample)
+  mean.vector[i] <- mean(beta.sample) #compute mean
+  var.vector[i] <-var(beta.sample) #compute variance
+  skew.vector[i] <- skewness(beta.sample) #compute skewness
+  kurt.vector[i] <- kurtosis(beta.sample) #compute kurtosis
 }
 
 #create tibble to plot the data
-beta.tibble <- tibble(
+beta.tibble <- tibble( #add computed statistics into the tibble
   mean = mean.vector,
   variance = var.vector,
   skewness = skew.vector,
@@ -460,4 +495,3 @@ kurt.hist <- ggplot()+
   labs(x = "Kurtosis", 
        y = "Density",
        title = "Sampling Distibution of Kurtosis")
-
