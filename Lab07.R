@@ -1,9 +1,3 @@
-#fix task 3 based on homework feedback
-#start the writeup
-#check that plots in 4 are correct
-#rerun R and check that everything is correct
-#kurtosis looks weird
-
 ################################################################################
 # LAB 7 R CODE
 # YULIIA HELEVERIA
@@ -232,7 +226,8 @@ beta.first.hist <- ggplot()+
   geom_histogram(data = tibble(beta.first.sample), aes(x = beta.first.sample, y=after_stat(density)),
                  color = "black", fill = "lightgray")+ #plot histogram
   #plot sample density
-  geom_density(data = tibble(beta.first.sample), aes(x = beta.first.sample, y=after_stat(density), color="BetaSample(2,5)"))+
+  stat_density(data = tibble(beta.first.sample), aes(x = beta.first.sample, y=after_stat(density), color="BetaSample(2,5)"),
+               geom = "line")+
   #plot actual Beta density
   geom_line(data = first.dist, aes(x = x, y=beta.pdf, color="Beta(2,5)"))+
   theme_bw()+
@@ -244,7 +239,7 @@ beta.first.hist <- ggplot()+
   scale_color_manual( #complete the legend
     name = "Density",
     values = c("BetaSample(2,5)" = "red", "Beta(2,5)" = "blue"),
-    labels = c("Beta Population", "Beta Sample"))+
+    labels = c("Beta Population(2,5)", "Beta Sample(2,5)"))+
   theme(legend.position = "bottom")
 
 #include numerical summaries
@@ -252,7 +247,7 @@ beta.first.summary <- tibble(beta.first.sample) %>%
   summarize(mean = mean(beta.first.sample),
             variance = var(beta.first.sample),
             skewness = skewness(beta.first.sample),
-            excess_kurtosis = kurtosis(beta.first.sample))
+            kurtosis = kurtosis(beta.first.sample))
 
 ################################################################################
 #second case - beta(5, 5)
@@ -265,7 +260,9 @@ beta.second.hist <- ggplot()+
   geom_histogram(data = tibble(beta.second.sample), aes(x = beta.second.sample, y=after_stat(density)),
                  color = "black", fill = "lightgray")+ #plot histogram
   #plot sample density
-  geom_density(data = tibble(beta.second.sample), aes(x = beta.second.sample, y=after_stat(density), color="BetaSample(5,5)"))+
+  stat_density(data = tibble(beta.second.sample), aes(x = beta.second.sample, y=after_stat(density),
+                                                      color="BetaSample(5,5)")
+               , geom = "line")+
   #plot actual Beta density
   geom_line(data = second.dist, aes(x = x, y=beta.pdf, color="Beta(5,5)"))+
   theme_bw()+
@@ -277,7 +274,7 @@ beta.second.hist <- ggplot()+
   scale_color_manual( #complete the legend
     name = "Density",
     values = c("BetaSample(5,5)" = "red", "Beta(5,5)" = "blue"),
-    labels = c("Beta Population", "Beta Sample"))+
+    labels = c("Beta Population(5,5)", "Beta Sample(5,5)"))+
   theme(legend.position = "bottom")
 
 #include numerical summaries
@@ -285,7 +282,7 @@ beta.second.summary <- tibble(beta.second.sample) %>%
   summarize(mean = mean(beta.second.sample),
             variance = var(beta.second.sample),
             skewness = skewness(beta.second.sample),
-            excess_kurtosis = kurtosis(beta.second.sample))
+            kurtosis = kurtosis(beta.second.sample))
 
 ################################################################################
 #third case - beta(5, 2)
@@ -298,7 +295,9 @@ beta.third.hist <- ggplot()+
   geom_histogram(data = tibble(beta.third.sample), aes(x = beta.third.sample, y=after_stat(density)),
                  color = "black", fill = "lightgray")+ #plot histogram
   #plot sample density
-  geom_density(data = tibble(beta.third.sample), aes(x = beta.third.sample, y=after_stat(density), color="BetaSample(5,2)"))+
+  stat_density(data = tibble(beta.third.sample), aes(x = beta.third.sample, y=after_stat(density),
+                                                     color="BetaSample(5,2)"),
+               geom = "line")+
   #plot actual Beta density
   geom_line(data = third.dist, aes(x = x, y=beta.pdf, color="Beta(5,2)"))+
   theme_bw()+
@@ -310,7 +309,7 @@ beta.third.hist <- ggplot()+
   scale_color_manual( #complete the legend
     name = "Density",
     values = c("BetaSample(5,2)" = "red", "Beta(5,2)" = "blue"),
-    labels = c("Beta Population", "Beta Sample"))+
+    labels = c("Beta Population(5,2)", "Beta Sample(5,2)"))+
   theme(legend.position = "bottom")
 
 #include numerical summaries
@@ -318,7 +317,7 @@ beta.third.summary <- tibble(beta.third.sample) %>%
   summarize(mean = mean(beta.third.sample),
             variance = var(beta.third.sample),
             skewness = skewness(beta.third.sample),
-            excess_kurtosis = kurtosis(beta.third.sample))
+            kurtosis = kurtosis(beta.third.sample))
 
 ################################################################################
 #fourth case - beta(0.50, 0.50)
@@ -331,7 +330,9 @@ beta.fourth.hist <- ggplot()+
   geom_histogram(data = tibble(beta.fourth.sample), aes(x = beta.fourth.sample, y=after_stat(density)),
                  color = "black", fill = "lightgray")+ #plot histogram
   #plot sample density
-  geom_density(data = tibble(beta.fourth.sample), aes(x = beta.fourth.sample, y=after_stat(density), color="BetaSample(0.50,0.50)"))+
+  stat_density(data = tibble(beta.fourth.sample), aes(x = beta.fourth.sample, y=after_stat(density),
+                                                      color="BetaSample(0.50,0.50)"),
+               geom = "line")+
   #plot actual Beta density
   geom_line(data = fourth.dist, aes(x = x, y=beta.pdf, color="Beta(0.50,0.50)"))+
   theme_bw()+
@@ -343,7 +344,7 @@ beta.fourth.hist <- ggplot()+
   scale_color_manual( #complete the legend
     name = "Density",
     values = c("BetaSample(0.50,0.50)" = "red", "Beta(0.50,0.50)" = "blue"),
-    labels = c("Beta Population", "Beta Sample"))+
+    labels = c("Beta Population(0.50,0.50)", "Beta Sample(0.50,0.50)"))+
   theme(legend.position = "bottom")
 
 #include numerical summaries
@@ -351,7 +352,7 @@ beta.fourth.summary <- tibble(beta.fourth.sample) %>%
   summarize(mean = mean(beta.fourth.sample),
             variance = var(beta.fourth.sample),
             skewness = skewness(beta.fourth.sample),
-            excess_kurtosis = kurtosis(beta.fourth.sample))
+            kurtosis = kurtosis(beta.fourth.sample))
 
 ################################################################################
 # TASK 4: is sample size important?
@@ -457,41 +458,39 @@ mean.hist <- ggplot()+
   geom_histogram(data = beta.tibble, aes(x= mean, y = ..density..),
                  fill = "lightblue", color = "black")+ #create a histogram
   theme_bw()+ #put white background
-  geom_density(data = beta.tibble, aes (x= mean, color = "Density"))+ #create a density line
-  scale_color_manual(name = "Legend", values = c("Density" = "red")) + #create a legend
+  geom_density(data = beta.tibble, aes (x= mean), , color = "red")+ #create a density line
   labs(x = "Mean", 
        y = "Density",
-       title = "Sampling Distibution of Mean")
+       title = "Sampling Distibution of Mean of Beta(2,5)")
   
 #plot a histogram for variance
 var.hist <- ggplot()+
   geom_histogram(data = beta.tibble, aes(x= variance, y = ..density..),
                  fill = "lightblue", color = "black")+ #create a histogram
   theme_bw()+ #put white background
-  geom_density(data = beta.tibble, aes (x= variance, color = "Density"))+ #create a density line
-  scale_color_manual(name = "Legend", values = c("Density" = "red")) + #create a legend
+  geom_density(data = beta.tibble, aes (x= variance), color = "red")+ #create a density line
   labs(x = "Variance", 
        y = "Density",
-       title = "Sampling Distibution of Variance")
+       title = "Sampling Distibution of Variance of Beta(2,5)")
 
 #plot a histogram for skewness
 skew.hist <- ggplot()+
   geom_histogram(data = beta.tibble, aes(x= skewness, y = ..density..),
                  fill = "lightblue", color = "black")+ #create a histogram
   theme_bw()+ #put white background
-  geom_density(data = beta.tibble, aes (x= skewness, color = "Density"))+ #create a density line
-  scale_color_manual(name = "Legend", values = c("Density" = "red")) + #create a legend
+  geom_density(data = beta.tibble, aes (x= skewness), color = "red")+ #create a density line
   labs(x = "Skewness", 
        y = "Density",
-       title = "Sampling Distibution of Skewness")
+       title = "Sampling Distibution of Skewness of Beta(2,5)")
 
 #plot a histogram for kurtosis
 kurt.hist <- ggplot()+
   geom_histogram(data = beta.tibble, aes(x= kurtosis, y = ..density..),
                  fill = "lightblue", color = "black")+ #create a histogram
   theme_bw()+ #put white background
-  geom_density(data = beta.tibble, aes (x= kurtosis, color = "Density"))+ #create a density line
-  scale_color_manual(name = "Legend", values = c("Density" = "red")) + #create a legend
+  geom_density(data = beta.tibble,
+               aes (x= kurtosis),
+               color = "red")+ #create a density line
   labs(x = "Kurtosis", 
        y = "Density",
-       title = "Sampling Distibution of Kurtosis")
+       title = "Sampling Distibution of Kurtosis of Beta(2,5)")
