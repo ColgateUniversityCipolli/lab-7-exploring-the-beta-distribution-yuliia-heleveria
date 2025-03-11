@@ -1,3 +1,5 @@
+#why are two diffrent values returned for MOM and MLE
+
 ################################################################################
 # LAB 7-8 R CODE
 # YULIIA HELEVERIA
@@ -11,6 +13,7 @@ library(tidyverse)
 library(e1071)
 library(cumstats)
 library(patchwork)
+library(nleqslv)
 
 ################################################################################
 # TASK 1: describe the population distribution
@@ -512,7 +515,42 @@ death.data.2022 <- death.data.2022|>
 ################################################################################
 # TASK 7: what are alpha and beta?
 ################################################################################
+#get data for moments estimate
+data.2022 <- death.data.2022$"2022"
+data.2022 <- data.2022[!is.na(data.2022)] #remove NA in data
 
+#compute method of moments estimates
+MOM.beta <- function(data, par){
+  alpha <-par[1] #get alpha and beta
+  beta <- par[2]
+ 
+  #compute the first moment  
+  EX1 = alpha/(alpha+beta)
+  m1 <- mean(data, na.rm=T)
+  #compute the second moment
+  EX2 = ((alpha+1)*alpha)/((alpha+beta+1)*(alpha+beta))
+  m2 <- mean(data^2, na.rm=T)
+  
+  to.return <- c(EX1-m1, EX2-m2) #both sides of each of two moments should be equal
+  return(to.return) # Goal: find alpha and beta so both of there parameters are 0
+}
 
+nleqslv(x = c(8, 1000), #vector for the initial guess of alpha and beta
+        fn = MOM.beta,
+        data = data.2022)
+
+#compute maximum likelihood estimates
+llbeta <- function(data, par, neg=FALSE){
+  alpha <- par[1] #get alpha and beta
+  beta <- par[2]
+  
+  loglik <- sum(log(dbeta(x=data, shape1 = alpha, shape2 = beta)))
+  
+  return(ifelse(neg, -loglik, loglik))
+}
+optim(par = c(8, 1000),
+      fn = llbeta,
+      data=data.2022,
+      neg = T)
 
 
