@@ -1,5 +1,5 @@
 ################################################################################
-# LAB 7 R CODE
+# LAB 7-8 R CODE
 # YULIIA HELEVERIA
 # MATH 240 - SPRING 2025
 ################################################################################
@@ -494,3 +494,25 @@ kurt.hist <- ggplot()+
   labs(x = "Kurtosis", 
        y = "Density",
        title = "Sampling Distibution of Kurtosis of Beta(2,5)")
+
+################################################################################
+# TASK 6: collect and clean data
+################################################################################
+#open prepossessed world bank death data 
+death.data <- read_csv("WorldBankDeathData.csv")
+
+#modify data to keep country, country code, and year 2022
+death.data.2022 <- death.data |>
+  select("Country Name", "Country Code", "2022")
+
+#convert number of death per 1000 citizens to a rate to support beta distribution
+death.data.2022 <- death.data.2022|>
+  mutate("2022" = death.data.2022$"2022"/1000) #divide each death rate by 1000
+
+################################################################################
+# TASK 7: what are alpha and beta?
+################################################################################
+
+
+
+
