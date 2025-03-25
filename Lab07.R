@@ -535,7 +535,7 @@ MOM.beta <- function(data, par){
   return(to.return) # Goal: find alpha and beta so both of there parameters are 0
 }
 
-nleqslv(x = c(8, 1000), #vector for the initial guess of alpha and beta
+MOM.sol <- nleqslv(x = c(8, 1000), #vector for the initial guess of alpha and beta
         fn = MOM.beta,
         data = data.2022)
 
@@ -544,13 +544,20 @@ llbeta <- function(data, par, neg=FALSE){
   alpha <- par[1] #get alpha and beta
   beta <- par[2]
   
-  loglik <- sum(log(dbeta(x=data, shape1 = alpha, shape2 = beta)))
+  loglik <- sum(log(dbeta(x=data, shape1 = alpha, shape2 = beta)), na.rm = T)
   
   return(ifelse(neg, -loglik, loglik))
 }
-optim(par = c(8, 1000),
+
+MLE.sol <- optim(par = c(8, 1000),
       fn = llbeta,
       data=data.2022,
       neg = T)
 
-
+#plot a histogram of data
+hist.2022 <- ggplot(data = tibble(data.2022))+
+  geom_histogram(aes(x = data.2022, y = after_stat(density)))+ #plot the histogram
+  theme_bw()+ #remove the gray background
+  geom_hline(yintercept = 0)+ #add x-axis
+  xlab("Death Data from 2022")+ #add labels to x- and y-axis
+  ylab("Density")
