@@ -647,4 +647,49 @@ plot.beta.MLE <- ggplot(data=tibble(MLEs.beta))+
 MLE.and.MOM <- (plot.alpha.MOM + plot.beta.MOM)/
   (plot.alpha.MLE + plot.beta.MLE)
 
+#compute bias, precision, and mean squared error for the estimates
+table.precision <- tibble("Estimate" = rep(NA, 4), 
+                          "Bias" = rep(NA, 4),
+                          "Precision" = rep(NA, 4),
+                          "Mean Squared Error" = rep(NA, 4))
+
+#compute values for alpha MOM
+alphaMOM.bias <- mean(MOMs.alpha - alpha) 
+alphaMOM.precision <- 1/var(MOMs.alpha)
+alphaMOM.mse <- alphaMOM.bias^2 + var(MOMs.alpha)
+
+#compute values for beta MOM
+betaMOM.bias <- mean(MOMs.beta - beta) 
+betaMOM.precision <- 1/var(MOMs.beta)
+betaMOM.mse <- betaMOM.bias^2 + var(MOMs.beta)
+
+#compute values for alpha MLE
+alphaMLE.bias <- mean(MLEs.alpha - alpha) 
+alphaMLE.precision <- 1/var(MLEs.alpha)
+alphaMLE.mse <- alphaMLE.bias^2 + var(MLEs.alpha)
+
+#compute values for beta MLE
+betaMLE.bias <- mean(MLEs.beta - beta) 
+betaMLE.precision <- 1/var(MLEs.beta)
+betaMLE.mse <- betaMLE.bias^2 + var(MLEs.beta)
+
+#add rows for each method into out table
+table.precision <- table.precision|>
+  add_row("Estimate" = "Alpha MOM", #add alpha MOM
+    "Bias" = alphaMOM.bias,
+    "Precision" = alphaMOM.precision,
+    "Mean Squared Error" = alphaMOM.mse)|>
+  add_row("Estimate" = "Beta MOM", #add beta MOM
+          "Bias" = betaMOM.bias,
+          "Precision" = betaMOM.precision,
+          "Mean Squared Error" = betaMOM.mse)|>
+  add_row("Estimate" = "Alpha MLE", #add alpha MLE
+          "Bias" = alphaMLE.bias,
+          "Precision" = alphaMLE.precision,
+          "Mean Squared Error" = alphaMLE.mse)|>
+  add_row("Estimate" = "Beta MLE", #add beta MLE
+          "Bias" = betaMLE.bias,
+          "Precision" = betaMLE.precision,
+          "Mean Squared Error" = betaMLE.mse)|>
+  slice(-c(1:4)) #delete NA rows
 
