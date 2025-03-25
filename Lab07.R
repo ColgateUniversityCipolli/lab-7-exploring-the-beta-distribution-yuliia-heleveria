@@ -584,6 +584,12 @@ num <- 266 #define sample size
 MOMs <- rep(NA, 1000)
 MLEs <- rep(NA, 1000)
 
+#store extracted alpha and beta from MOM and MLE
+MOMs.alpha <- rep(NA, 1000)
+MLEs.alpha <- rep(NA, 1000)
+MOMs.beta <- rep(NA, 1000)
+MLEs.beta <- rep(NA, 1000)
+
 #for loop to simulate new data
 for (i in 1:1000){
   set.seed(7272+i) #set seed so everyone works with the same samples
@@ -592,13 +598,53 @@ for (i in 1:1000){
   MOMs[i] <- nleqslv(x = c(8, 950), 
                  fn = MOM.beta,
                  data = simulate.new.dat)
+  #store alpha and beta
+  MOMs.alpha[i] = MOMs[[i]][[1]]
+  MOMs.beta[i] = MOMs[[i]][[2]]
   #compute and store MLE estimate
   MLEs[i] <- optim(par = c(8, 950),
                 fn = llbeta,
                 data=simulate.new.dat,
                 neg = T)
+  #store alpha and beta
+  MLEs.alpha[i] = MLEs[[i]][[1]]
+  MLEs.beta[i] = MLEs[[i]][[2]]
 }
 
+#plot estimated alpha densities for MOM
+plot.alpha.MOM <- ggplot(data=tibble(MOMs.alpha))+
+  geom_density(aes(x=MOMs.alpha, y=after_stat(count)))+ #plot density
+  theme_bw()+ #remove gray background
+  geom_hline(yintercept = 0)+ #add x-axis
+  xlab("Alpha MOM")+ #add x and y labels
+  ylab("Density")
 
+#plot estimated beta densities for MOM
+plot.beta.MOM <- ggplot(data=tibble(MOMs.beta))+
+  geom_density(aes(x=MOMs.beta, y=after_stat(count)))+ #plot density
+  theme_bw()+ #remove gray background
+  geom_hline(yintercept = 0)+ #add x-axis
+  xlab("Beta MOM")+ #add x and y labels
+  ylab("Density")
+
+#plot estimated alpha densities for MLE
+plot.alpha.MLE <- ggplot(data=tibble(MLEs.alpha))+
+  geom_density(aes(x=MLEs.alpha, y=after_stat(count)))+ #plot density
+  theme_bw()+ #remove gray background
+  geom_hline(yintercept = 0)+ #add x-axis
+  xlab("Alpha MLE")+ #add x and y labels
+  ylab("Density")
+
+#plot estimated beta densities for MLE
+plot.beta.MLE <- ggplot(data=tibble(MLEs.beta))+
+  geom_density(aes(x=MLEs.beta, y=after_stat(count)))+ #plot density
+  theme_bw()+ #remove gray background
+  geom_hline(yintercept = 0)+ #add x-axis
+  xlab("Beta MLE")+ #add x and y labels
+  ylab("Density")
+
+#combine graphs into 2*2 grid using patchwork
+MLE.and.MOM <- (plot.alpha.MOM + plot.beta.MOM)/
+  (plot.alpha.MLE + plot.beta.MLE)
 
 
