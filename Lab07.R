@@ -1,5 +1,3 @@
-#why are two diffrent values returned for MOM and MLE
-
 ################################################################################
 # LAB 7-8 R CODE
 # YULIIA HELEVERIA
@@ -535,6 +533,7 @@ MOM.beta <- function(data, par){
   return(to.return) # Goal: find alpha and beta so both of there parameters are 0
 }
 
+#compute the solution for the method of moments
 MOM.sol <- nleqslv(x = c(8, 1000), #vector for the initial guess of alpha and beta
         fn = MOM.beta,
         data = data.2022)
@@ -549,12 +548,13 @@ llbeta <- function(data, par, neg=FALSE){
   return(ifelse(neg, -loglik, loglik))
 }
 
+#compute the solution for the maximum likelihood estimates
 MLE.sol <- optim(par = c(8, 1000),
       fn = llbeta,
       data=data.2022,
       neg = T)
 
-#superimpose distributions for MOM and MLE
+#get data to superimpose distributions for MOM and MLE
 ggdat.death <- tibble(x = seq(0,0.023,length.out=1000)) |>
   mutate(pdf.mom = dbeta(x=x, shape1=MOM.sol$x[1], shape2=MOM.sol$x[2]),
          pdf.mle = dbeta(x=x, shape1=MLE.sol$par[1], shape2=MLE.sol$par[2]))
@@ -584,7 +584,7 @@ num <- 266 #define sample size
 MOMs <- rep(NA, 1000)
 MLEs <- rep(NA, 1000)
 
-#store extracted alpha and beta from MOM and MLE
+#store for extracted alpha and beta values from MOM and MLE
 MOMs.alpha <- rep(NA, 1000)
 MLEs.alpha <- rep(NA, 1000)
 MOMs.beta <- rep(NA, 1000)
