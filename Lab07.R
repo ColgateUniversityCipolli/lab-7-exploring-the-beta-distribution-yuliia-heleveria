@@ -554,10 +554,21 @@ MLE.sol <- optim(par = c(8, 1000),
       data=data.2022,
       neg = T)
 
-#plot a histogram of data
+#superimpose distributions for MOM and MLE
+ggdat.death <- tibble(x = seq(0,0.023,length.out=1000)) |>
+  mutate(pdf.mom = dbeta(x=x, shape1=MOM.sol$x[1], shape2=MOM.sol$x[2]),
+         pdf.mle = dbeta(x=x, shape1=MLE.sol$par[1], shape2=MLE.sol$par[2]))
+
+#plot a histogram of death data
 hist.2022 <- ggplot(data = tibble(data.2022))+
-  geom_histogram(aes(x = data.2022, y = after_stat(density)))+ #plot the histogram
+  geom_histogram(aes(x = data.2022, y = after_stat(density)),
+                 color = "lightgray")+ #plot the histogram
+  geom_line(data=ggdat.death,
+            aes(x=x, y=pdf.mom, color="MOM"))+ #superimpose MOM distribution
+  geom_line(data=ggdat.death,
+            aes(x=x, y=pdf.mle, color="MLE"))+ #superimpose MLE distribution
   theme_bw()+ #remove the gray background
   geom_hline(yintercept = 0)+ #add x-axis
-  xlab("Death Data from 2022")+ #add labels to x- and y-axis
-  ylab("Density")
+  xlab("Number of death per 1000 citizens (2022)")+ #add labels to x- and y-axis
+  ylab("Density")+
+  labs(color = "")
