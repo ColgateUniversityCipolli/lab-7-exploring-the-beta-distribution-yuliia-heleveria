@@ -572,3 +572,33 @@ hist.2022 <- ggplot(data = tibble(data.2022))+
   xlab("Number of death per 1000 citizens (2022)")+ #add labels to x- and y-axis
   ylab("Density")+
   labs(color = "")
+
+################################################################################
+# TASK 8: which estimators should we use?
+################################################################################
+alpha <- 8 #define alpha and beta
+beta <- 950
+num <- 266 #define sample size 
+
+#define storage for MOM and MLE results
+MOMs <- rep(NA, 1000)
+MLEs <- rep(NA, 1000)
+
+#for loop to simulate new data
+for (i in 1:1000){
+  set.seed(7272+i) #set seed so everyone works with the same samples
+  simulate.new.dat <- rbeta(n = num, shape1 = alpha, shape2 = beta) #simulate new data
+  #compute and store MOM estimate
+  MOMs[i] <- nleqslv(x = c(8, 950), 
+                 fn = MOM.beta,
+                 data = simulate.new.dat)
+  #compute and store MLE estimate
+  MLEs[i] <- optim(par = c(8, 950),
+                fn = llbeta,
+                data=simulate.new.dat,
+                neg = T)
+}
+
+
+
+
