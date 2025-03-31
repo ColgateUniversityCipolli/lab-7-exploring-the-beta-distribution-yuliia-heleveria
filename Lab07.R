@@ -27,7 +27,7 @@ beta.first <- 5
 first.dist <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
   mutate(beta.pdf = dbeta(x, alpha.first, beta.first))          # compute the beta PDF
 
-ggplot(data= first.dist)+                                              # specify data
+first.dist.plot <- ggplot(data= first.dist)+                                              # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(2,5)")) +                 # plot beta dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
@@ -63,7 +63,7 @@ beta.second <- 5
 second.dist <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
   mutate(beta.pdf = dbeta(x, alpha.second, beta.second))         # compute the beta PDF
 
-ggplot(data= second.dist)+                                            # specify data
+second.dist.plot <- ggplot(data= second.dist)+                                            # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(5,5)")) +                 # plot beta dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
@@ -98,7 +98,7 @@ beta.third <- 2
 third.dist <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
   mutate(beta.pdf = dbeta(x, alpha.third, beta.third))          # compute the beta PDF
 
-ggplot(data= third.dist)+                                              # specify data
+third.dist.plot <- ggplot(data= third.dist)+                                              # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(5,2)")) +                 # plot beta dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
@@ -133,7 +133,7 @@ beta.fourth <- 0.5
 fourth.dist <- tibble(x = seq(-0.25, 1.25, length.out=1000))|>   # generate a grid of points
   mutate(beta.pdf = dbeta(x, alpha.fourth, beta.fourth))         # compute the beta PDF
 
-ggplot(data= fourth.dist)+                                             # specify data
+fourth.dist.plot <- ggplot(data= fourth.dist)+                                             # specify data
   geom_line(aes(x=x, y=beta.pdf, color="Beta(0.50,0.50)")) +           # plot beta dist
   geom_hline(yintercept=0)+                                            # plot x axis
   theme_bw()+                                                          # change theme
@@ -648,11 +648,6 @@ MLE.and.MOM <- (plot.alpha.MOM + plot.beta.MOM)/
   (plot.alpha.MLE + plot.beta.MLE)
 
 #compute bias, precision, and mean squared error for the estimates
-table.precision <- tibble("Estimate" = rep(NA, 4), 
-                          "Bias" = rep(NA, 4),
-                          "Precision" = rep(NA, 4),
-                          "Mean Squared Error" = rep(NA, 4))
-
 #compute values for alpha MOM
 alphaMOM.bias <- mean(MOMs.alpha - alpha) 
 alphaMOM.precision <- 1/var(MOMs.alpha)
@@ -673,23 +668,10 @@ betaMLE.bias <- mean(MLEs.beta - beta)
 betaMLE.precision <- 1/var(MLEs.beta)
 betaMLE.mse <- betaMLE.bias^2 + var(MLEs.beta)
 
-#add rows for each method into out table
-table.precision <- table.precision|>
-  add_row("Estimate" = "Alpha MOM", #add alpha MOM
-    "Bias" = alphaMOM.bias,
-    "Precision" = alphaMOM.precision,
-    "Mean Squared Error" = alphaMOM.mse)|>
-  add_row("Estimate" = "Beta MOM", #add beta MOM
-          "Bias" = betaMOM.bias,
-          "Precision" = betaMOM.precision,
-          "Mean Squared Error" = betaMOM.mse)|>
-  add_row("Estimate" = "Alpha MLE", #add alpha MLE
-          "Bias" = alphaMLE.bias,
-          "Precision" = alphaMLE.precision,
-          "Mean Squared Error" = alphaMLE.mse)|>
-  add_row("Estimate" = "Beta MLE", #add beta MLE
-          "Bias" = betaMLE.bias,
-          "Precision" = betaMLE.precision,
-          "Mean Squared Error" = betaMLE.mse)|>
-  slice(-c(1:4)) #delete NA rows
-
+#place data into the table
+table.precision <- tibble(
+  Estimate = c("Alpha MOM", "Beta MOM", "Alpha MLE", "Beta MLE"),
+  Bias = c(alphaMOM.bias, betaMOM.bias, alphaMLE.bias, betaMLE.bias),
+  Precision = c(alphaMOM.precision, betaMOM.precision, alphaMLE.precision, betaMLE.precision),
+  `Mean Squared Error` = c(alphaMOM.mse, betaMOM.mse, alphaMLE.mse, betaMLE.mse)
+)
