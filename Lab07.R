@@ -697,3 +697,6 @@ table.precision <- tibble(
   Precision = c(alphaMOM.precision, betaMOM.precision, alphaMLE.precision, betaMLE.precision),
   `Mean Squared Error` = c(alphaMOM.mse, betaMOM.mse, alphaMLE.mse, betaMLE.mse)
 )
+
+#save table for the writeup
+write_csv(table.precision, "table_precision.csv")

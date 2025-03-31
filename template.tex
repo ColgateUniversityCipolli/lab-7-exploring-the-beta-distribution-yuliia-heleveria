@@ -176,6 +176,12 @@ In Section \ref{sec:examp} we examine death rates data using Beta distribution. 
  \label{fig:mommle}
 \end{Figure}
 
+We can see that the distributions of the estimated parameters are similar in shape. However, there is a slight difference in peak locations for MOM and MLE estimates. MLE has slightly lower means and significantly lower variability compared to MOM estimates.
+
+We also computed bias, precision, and mean squared error for estimates in Figure (\ref{fig:mommle}). The numerical estimates are provided in Table (\ref{precision.tab}). It is evident that MLE provides lower bias, higher precision, and lower mean squared error for both $\alpha$ and $\beta$ estimates.
+
+In our example, MLE has a smaller variance, higher precision, and lower bias compared to MOM, so MLE should be the preferred estimator.
+
 
 \section{Example}\label{sec:examp}
 
@@ -222,7 +228,7 @@ you cite them in your document, the bibliography section will automatically popu
 
 %creating an xtable for the properties
 % latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Mon Mar 31 19:35:24 2025
+% Mon Mar 31 19:55:37 2025
 \begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|c|c|c|}
@@ -237,6 +243,25 @@ Beta(2,5) & 0.29 & 0.03 & 0.60 & -0.12 \\
 \end{tabular}
 \caption{Statistical properties for various parameteres of Beta distribution} 
 \label{statsProperties.tab}
+\end{table}
+
+
+% latex table generated in R 4.4.2 by xtable 1.8-4 package
+% Mon Mar 31 19:55:37 2025
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|}
+  \hline
+Estimate & Bias & Precision & Mean.Squared.Error \\ 
+  \hline
+Alpha MOM & 0.08 & 1.83 & 0.55 \\ 
+  Beta MOM & 10.57 & 0.00 & 8303.00 \\ 
+  Alpha MLE & 0.07 & 2.13 & 0.47 \\ 
+  Beta MLE & 9.18 & 0.00 & 7118.73 \\ 
+   \hline
+\end{tabular}
+\caption{Bias, precision, and mean squared error for estimates} 
+\label{precision.tab}
 \end{table}
 
 
