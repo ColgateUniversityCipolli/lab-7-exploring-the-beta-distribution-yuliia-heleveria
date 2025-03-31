@@ -12,6 +12,7 @@ library(e1071)
 library(cumstats)
 library(patchwork)
 library(nleqslv)
+library(xtable)
 
 ################################################################################
 # TASK 1: describe the population distribution
@@ -152,11 +153,29 @@ skew.fourth <- (2*(beta.fourth-alpha.fourth)*sqrt(alpha.fourth+beta.fourth+1))/ 
 kurt.fourth <- (6*((alpha.fourth-beta.fourth)^2*(alpha.fourth+beta.fourth+1) - #calculate kurtosis
                     alpha.fourth*beta.fourth*(alpha.fourth+beta.fourth+2)))/
   (alpha.fourth*beta.fourth*(alpha.fourth+beta.fourth+2)*(alpha.fourth+beta.fourth+3))
+
+#combine four graphs using patchwork
+combined.dist.plots <- (first.dist.plot + second.dist.plot) /
+  (third.dist.plot + fourth.dist.plot)
+
+#save image of the plots
+ggsave("betaplots.png", plot = combined.dist.plots, width = 6, height = 6, dpi = 300)
+
 #compute the table for these variables
 stats.fourth.tibble <- tibble(mean = mean.fourth, #input calculated variables into the table
                              variance = var.fourth,
                              skewness = skew.fourth,
                              excess_kurtosis = kurt.fourth)
+
+#create a table for four Beta distribution statistics 
+stats.table <- tibble(Distribution = c("Beta(2,5)", "Beta(5,5)", "Beta(5,2)", "Beta(0.5,0.5)"),
+                      Mean = c(mean.first, mean.second, mean.third, mean.fourth),
+                      Variance = c(var.first, var.second, var.third, var.fourth),
+                      Skewness = c(skew.first, skew.second, skew.third, skew.fourth),
+                      "Excess Kurtosis" = c(kurt.first, kurt.second, kurt.third, kurt.fourth))
+
+#save table for the writeup
+write_csv(stats.table, "stats_table.csv")
 
 ################################################################################
 # TASK 2: compute the moments
@@ -646,6 +665,9 @@ plot.beta.MLE <- ggplot(data=tibble(MLEs.beta))+
 #combine graphs into 2*2 grid using patchwork
 MLE.and.MOM <- (plot.alpha.MOM + plot.beta.MOM)/
   (plot.alpha.MLE + plot.beta.MLE)
+
+#save 2*2 graph for the writeup
+ggsave("mommle.png", plot = MLE.and.MOM, width = 6, height = 6, dpi = 300)
 
 #compute bias, precision, and mean squared error for the estimates
 #compute values for alpha MOM
