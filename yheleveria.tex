@@ -91,21 +91,21 @@
 \begin{multicols}{2}
  \raggedcolumns
 \begin{abstract}
-We explore the Beta distribution, a flexible probability distribution, which is frequently used to model proportions and rates. We analyze the shape of Beta probability density function (PDF) and how Beta's parameters $\alpha$ and $\beta$ can influence its shape. Using various Beta PDFs, we examine key properties of the Beta distribution, such as its mean, variance, skewness, and excess kurtosis. We discuss parameter estimation using method of moments and maximum likelihood estimation. We then demonstrate a real-world application of Beta distribution by showing its ability to model counties' death rates.
+We explore the beta distribution, a flexible probability distribution, which is frequently used to model proportions and rates. We analyze beta's probability density function (PDF) and how beta's parameters $\alpha$ and $\beta$ can influence its PDF's shape. Using various beta PDFs, we examine key properties of the beta distribution, such as its mean, variance, skewness, and excess kurtosis. We discuss parameter estimation for beta distribution using method of moments and maximum likelihood estimation. We then demonstrate a real-world application of beta distribution by showing its ability to model countries' death rates.
 \end{abstract}
 
-\noindent \textbf{Keywords:} Beta distribution; density function; estimators.
+\noindent \textbf{Keywords:} beta distribution; probability density function; parameter estimators.
 
 \section{Introduction}
-The Beta distribution is a continuous distribution that is defined on the interval [0,1]. It is used to model a random variable \textit{X}. The Beta distribution is used to model proportions, rates, and probabilities. The distribution is governed by two shape parameters: $\alpha > 0$ and $\beta > 0$, which determine the shape for different data distributions. The Beta distribution is very flexible with its shape: it can be left-skewed, right-skewed, or symmetric. 
+The beta distribution is a continuous probability distribution that is defined on the interval [0,1]. It is used to model a random variable \textit{X}. The beta distribution is used to model proportions, rates, and probabilities. The distribution is governed by two shape parameters: $\alpha > 0$ and $\beta > 0$, which determine the shape for different data distributions. The beta distribution is very flexible with its shape: it can be left-skewed, right-skewed, or symmetric. 
 
 
-Section \ref{sec:pdf} defines the probability density function (PDF) and its parameters for Beta distribution. Section \ref{sec:prop} covers statistical characteristics of the Beta distribution such as mean, variance, skewness, and excess kurtosis. Section \ref{sec:estim} discusses the methods for estimating $\alpha$ and $\beta$ from sample data using the method of moments (MOM) and maximum likelihood estimation (MLE). Section \ref{sec:examp} presents the example from the death rates data to demonstrate parameter estimation.
+Section \ref{sec:pdf} defines the probability density function (PDF) and its parameters for beta distribution. Section \ref{sec:prop} covers statistical characteristics of the beta distribution such as mean, variance, skewness, and excess kurtosis. Section \ref{sec:estim} discusses the methods for estimating $\alpha$ and $\beta$ from sample data using the method of moments (MOM) and maximum likelihood estimation (MLE). Section \ref{sec:examp} presents the example from the death rates data to demonstrate real world application of beta distribution.
 
 
 
 \section{Density Function and Parameters}\label{sec:pdf}
-The probability density function (PDF) of Beta distribution is given by the formula:
+The probability density function (PDF) of beta distribution is given by the formula:
 
 \[
  f(x | \alpha, \beta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} x^{\alpha-1}(1-x)^{\beta-1} I(x \in [0,1]),
@@ -122,12 +122,14 @@ The shape parameters $\alpha$ and $\beta$ control the skewness and concentration
  \label{fig:betaplots}
 \end{Figure}
 
-The four plots in Figure (\ref{fig:betaplots}) illustrate Beta probability density function with various combinations of parameters $\alpha$ and $\beta$. We used \texttt{ggpplot2} and \texttt{patchwork} packages to craete and combine the graphs \citep{ggplot2, patchwork}.The top-left plot demonstrates a distribution skewed to the right (where $\beta > \alpha$), so there is a higher chance of observing values in the lower range of the interval [0,1]. The top-right plot demonstrates a symmetric distribution centered around 0.5 ($\alpha = \beta$). Here, the values in the middle of the interval are most likely to occur. The bottom-left plot demonstrates a left-skewed distribution(where $\alpha > \beta$). The values closer to the end of the interval are most likely to occur. The bottom-right plot illustrates a U-shaped distribution (both $\alpha, \beta < 1$). The density is highest at the endpoints of the interval and lowest around 0.5.
+The four plots in Figure (\ref{fig:betaplots}) illustrate beta probability density function with various combinations of parameters $\alpha$ and $\beta$. We used \texttt{ggpplot2} and \texttt{patchwork} packages in \texttt{R} to create and combine the graphs \citep{ggplot2, patchwork}.The top-left plot demonstrates a distribution skewed to the right (where $\beta > \alpha$), so there is a higher chance of observing values in the lower range of the interval [0,1]. The top-right plot demonstrates a symmetric distribution centered around 0.5 ($\alpha = \beta$). Here, the values in the middle of the interval are most likely to occur. The bottom-left plot demonstrates a left-skewed distribution(where $\alpha > \beta$). The values closer to the end of the interval are most likely to occur. The bottom-right plot illustrates a U-shaped distribution (both $\alpha, \beta < 1$). For these parameters, the density is highest at the endpoints of the interval and lowest around 0.5.
+
+We can approximate the population distribution by using a sample and comparing its density to the true population's density. Figure (\ref{fig:sampandpop}) presents four samples and their estimates for the beta population by comparison of density curves. By comparing the shape of the sample's histogram and its density, we can conclude that the sample estimates the population well. The sample density curve is very similar to the population's density curve.
 
 
 \section{Properties}\label{sec:prop}
 
-The Beta distribution has the following key properties:
+The beta distribution has the following key properties:
 \begin{itemize}
     \item Mean: 
     $$E(X) = \frac{\alpha}{\alpha + \beta}$$
@@ -142,32 +144,41 @@ The Beta distribution has the following key properties:
     $$\text{kurt}(X) = \frac{6[(\alpha - \beta)^2(\alpha + \beta + 1) - \alpha \beta(\alpha + \beta + 2)]}{\alpha \beta (\alpha + \beta + 2)(\alpha + \beta + 3)}$$
 \end{itemize}
 
-Based on Figure (\ref{fig:betaplots}), we can see the values of the mean, variance, skewness, and excess kurtosis in Table (\ref{statsProperties.tab}). The mean of the distribution reflects the average value of the distribution. A low mean (such as for Beta(2, 5)) indicates a right-skewed distribution and a high mean (such as for Beta(5, 2)) indicates a left-skewed distribution. The mean when parameters $\alpha = \beta$ indicates a symmetrical distribution (Beta(5,5)). 
+Based on Figure (\ref{fig:betaplots}), we can see the values of the mean, variance, skewness, and excess kurtosis in Table (\ref{statsProperties.tab}). The mean of the distribution reflects the average value of the distribution. A low mean (such as for Beta(2, 5)) indicates a right-skewed distribution and a high mean (such as for Beta(5, 2)) indicates a left-skewed distribution. The mean when parameters $\alpha = \beta$ indicates a symmetrical distribution (Beta(5,5) and Beta(0.5,0.5)). 
 
 The variance indicates the spread of the distribution around the mean. Beta(5,5) has the lowest variance and Beta(0.5,0.5) has the highest variance.
 
-The skewness describes the asymmetry of the distribution. Positive skewness indicates a right-skewed distribution (Beta(2,5)) and negative skewness indicates a left-skewed distribution (Beta(5,5)). If skewness is zero, the distribution is symmetric (Beta(0.5,0.5) and Beta(5,5)).
+The skewness describes the asymmetry of the distribution. Positive skewness indicates a right-skewed distribution (Beta(2,5)) and negative skewness indicates a left-skewed distribution (Beta(5,2)). If skewness is zero, the distribution is symmetric (Beta(0.5,0.5) and Beta(5,5)).
 
-The excess kurtosis measures how peaked the distribution is compared to a normal distribution. If it is equal to 0, the distribution is as peaked as the normal distribution is (mesokurtic). If it is positive, the distribution has a sharp peak and flat tails (leptokurtic). If excess kurtosis is negative, the distribution has a plat peak and thin tails (platykurtic). All four Beta distributions analyzed are platykurtic.
+The excess kurtosis measures how peaked the distribution is compared to a normal distribution. If the excess kurtosis is equal to 0, the distribution is as peaked as the normal distribution is (mesokurtic). If the excess kurtosis is positive, the distribution has a sharp peak and flat tails (leptokurtic). If the excess kurtosis is negative, the distribution has a plat peak and thin tails (platykurtic). All four beta distributions analyzed are platykurtic because their excess kurtosis is less than 0.
+
+Figure (\ref{fig:stats}) illustrates how sample's statistics (mean, variance, skewness, and kurtosis) converge to the population values as the sample size increases. Each color line represents a different simulation, showing how the cumulative statistics evolve with increasing sample size for all of the trials. The cumulative statistics were calculated using \texttt{cumstats} package in \texttt{R} \citep{cumstats}. The horizontal black line in each plot represents the true statistics value for the population. The sample statistics for each trial converge to the population value as the sample size increases. At smaller sample sizes, there is a large fluctuation in values, but as the sample size increased, the fluctuation decreases.
+
+\begin{Figure}
+ \centering
+ \includegraphics[width=\linewidth]{stats.png}
+ \captionof{figure}{Histograms of cumulative statistics as the sample size increases}
+ \label{fig:stats}
+\end{Figure}
 
 \section{Estimators}\label{sec:estim}
 
-Given a sample drawn from Beta distribution, we can estimate parameters $\alpha$ and $\beta$ using the method of moments (MOM) and maximum likelihood estimation (MLE).
+Given a sample drawn from beta distribution, we can estimate parameters $\alpha$ and $\beta$ using the method of moments (MOM) and maximum likelihood estimation (MLE).
 
 To estimate $\alpha$ and $\beta$ using MOM, we need to equate the first two sample moments ($E(X), E(X^2)$) to the population moments.
 
-The mean (first moment) of the Beta distribution is:
+The mean (first moment) of the beta distribution is:
 $$E(X) = \frac{\alpha}{\alpha + \beta}$$
 
-The variance (related to the second moment) of the Beta distribution is:
+The variance (related to the second moment) of the beta distribution is:
 $$E(X^2) = \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$$
 
-To estimate $\alpha$ and $\beta$ using by computing maximum likelihood estimation, we need to maximize the likelihood function based on the observed data. To simplify the optimization process, we can maximize the log-likelihood.
+To estimate $\alpha$ and $\beta$ using by computing maximum likelihood estimation, we need to maximize the likelihood function based on the observed data. To simplify the optimization process, we can maximize the log-likelihood function which produces the same result as maximizing the likelihood function.
 
 The log-likelihood function:
 $$L(\alpha, \beta | X) = \prod_{i=1}^{n} f_X(x_i| \alpha, \beta)$$
 
-In Section \ref{sec:examp} we examine death rates data using Beta distribution. The estimates for shape parameters $\alpha$ and $\beta$ based on the death data from the World Bank were computed using both MOM and MLE and we can see estimates' densities in Figure (\ref{fig:mommle}).
+In Section \ref{sec:examp} we examine death rates data using beta distribution. The estimates for shape parameters $\alpha$ and $\beta$ based on the death data from the World Bank were computed using both MOM and MLE and we can see estimates' densities in Figure (\ref{fig:mommle}).
 
 \begin{Figure}
  \centering
@@ -176,7 +187,7 @@ In Section \ref{sec:examp} we examine death rates data using Beta distribution. 
  \label{fig:mommle}
 \end{Figure}
 
-We can see that the distributions of the estimated parameters are similar in shape. However, there is a slight difference in peak locations for MOM and MLE estimates. MLE has slightly lower means and significantly lower variability compared to MOM estimates.
+We can see that the distributions of the estimated parameters are similar in shape. However, MLE has significantly lower variability compared to MOM estimates.
 
 We also computed bias, precision, and mean squared error for estimates in Figure (\ref{fig:mommle}). The numerical estimates are provided in Table (\ref{precision.tab}). It is evident that MLE provides lower bias, higher precision, and lower mean squared error for both $\alpha$ and $\beta$ estimates.
 
@@ -184,9 +195,9 @@ In our example, MLE has a smaller variance, higher precision, and lower bias com
 
 
 \section{Example}\label{sec:examp}
-As an example of practical application of the Beta distribution, consider country-level death rates. We use the data set from the World Bank and convert the raw data from the number of death per 1000 citizens to a rate to align with the Beta distribution's requirements of values within the interval $X \in [0,1]$. We used \texttt{tidyverse} package \citep{tidyverse} to convert the raw data into the rate to fit Beta distribution.
+As an example of practical application of the beta distribution, consider country-level death rates. We use the data set from the World Bank and we convert the raw data from the number of death per 1000 citizens to a rate to align with the beta distribution's requirements of values within the interval $X \in [0,1]$. We used \texttt{tidyverse} package in \texttt{R} \citep{tidyverse} to convert the raw data into the rate to fit beta distribution.
 
-Figure (\ref{fig:deathdata}) presents the histogram of the transformed death rate data with fitted Beta distribution obtained using both method of moments and maximum likelihood estimates. 
+Figure (\ref{fig:deathdata}) presents the histogram of the transformed death rate data with fitted beta distribution obtained using both method of moments and maximum likelihood estimates. 
 
 The histogram presents the distribution that is slightly right-skewed. Most countries' death rates are concentrated around 0.007. Both superimposed MOM and MLE provide reasonable fits for the data as they closely follow the histogram's shape. However, the peak is slightly better captured by MOM estimation.
 
@@ -201,11 +212,11 @@ Beta distribution is applicable to real-world data, such as death rated in a pop
 
 
 \section{Discussion}
-The Beta distribution is a flexible probability distribution commonly used for rate and proportion modeling. The shape parameters $\alpha$ and $\beta$ control skewness and spread of the distribution, allowing it to fit a wide range of data paterns.
+The beta distribution is a flexible probability distribution commonly used for rate and proportion modeling. The shape parameters $\alpha$ and $\beta$ control skewness and spread of the distribution, allowing it to fit a wide range of data paterns.
 
 We used both MOM and MLE to estimate the parameters and fit the distribution for the given data. Our results demonstrate that MLE is often less biased and more precise method for parameter estimation, especially when working with large datasets. 
 
-Beta distribution has a wide real-world application, such as for modeling death rates. Its ability to represent probabilities and proportions makes it especially useful in fields where uncertainty and prior knowledge play a critical role.
+The beta distribution has a wide real-world application, such as for modeling death rates. Its ability to represent probabilities and proportions makes it especially useful in fields where uncertainty and prior knowledge play a critical role.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography
@@ -224,9 +235,17 @@ Beta distribution has a wide real-world application, such as for modeling death 
 \onecolumn
 \section{Appendix}
 
+\begin{Figure}
+ \centering
+ \includegraphics[width=\linewidth]{betahists.png}
+ \captionof{figure}{Histogram of estimated densities of beta sample and beta population}
+ \label{fig:sampandpop}
+\end{Figure}
+
+
 %creating an xtable for the properties
 % latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Mon Mar 31 23:44:53 2025
+% Tue Apr  1 11:57:48 2025
 \begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|c|c|c|}
@@ -239,13 +258,13 @@ Beta(2,5) & 0.29 & 0.03 & 0.60 & -0.12 \\
   Beta(0.5,0.5) & 0.50 & 0.12 & 0.00 & -1.50 \\ 
    \hline
 \end{tabular}
-\caption{Statistical properties for various parameteres of Beta distribution} 
+\caption{Statistical properties for various parameteres of beta distribution} 
 \label{statsProperties.tab}
 \end{table}
 
 
 % latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Mon Mar 31 23:44:53 2025
+% Tue Apr  1 11:57:48 2025
 \begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|c|c|}

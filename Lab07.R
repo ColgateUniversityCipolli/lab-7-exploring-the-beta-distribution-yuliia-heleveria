@@ -374,6 +374,14 @@ beta.fourth.summary <- tibble(beta.fourth.sample) %>%
             skewness = skewness(beta.fourth.sample),
             kurtosis = kurtosis(beta.fourth.sample))
 
+#put histograms into the writeup
+total.hist <- (beta.first.hist + beta.second.hist)/
+  (beta.third.hist + beta.fourth.hist)
+
+#save image of the plots
+ggsave("betahists.png", plot = total.hist, width = 10, height = 6, dpi = 300)
+
+
 ################################################################################
 # TASK 4: is sample size important?
 ################################################################################
@@ -440,6 +448,8 @@ for (i in 2:50){
 }
 #combine all new plots together
 combined.plots.new.sample <- (mean.plot + var.plot)/(skew.plot+kurt.plot)
+#save image of the plots
+ggsave("stats.png", plot = combined.plots.new.sample, width = 6, height = 6, dpi = 300)
 
 ################################################################################
 # TASK 5: how can we model the variation?
@@ -593,7 +603,7 @@ hist.2022 <- ggplot(data = tibble(data.2022))+
   labs(color = "")
 
 #save graph for the writeup
-ggsave("deathdata.png", plot = hist.2022, width = 6, height = 6, dpi = 300)
+ggsave("deathdata.png", plot = hist.2022, width = 6, height = 4, dpi = 300)
 
 ################################################################################
 # TASK 8: which estimators should we use?
