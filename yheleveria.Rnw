@@ -1,54 +1,4 @@
-\documentclass{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
-% maxwidth is the original width if it is less than linewidth
-% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-\let\hlipl\hlkwb
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
-\usepackage{alltt}
+\documentclass{article}
 \usepackage{amsmath} %This allows me to use the align functionality.
                      %If you find yourself trying to replicate
                      %something you found online, ensure you're
@@ -71,7 +21,6 @@
 \newenvironment{Figure}
   {\par\medskip\noindent\minipage{\linewidth}}
   {\endminipage\par\medskip}
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \vspace{-1in}
@@ -122,7 +71,7 @@ The shape parameters $\alpha$ and $\beta$ control the skewness and concentration
  \label{fig:betaplots}
 \end{Figure}
 
-The four plots in Figure (\ref{fig:betaplots}) illustrate Beta probability density function with various combinations of parameters $\alpha$ and $\beta$. The top-left plot demonstrates a distribution skewed to the right (where $\beta > \alpha$), so there is a higher chance of observing values in the lower range of the interval [0,1]. The top-right plot demonstrates a symmetric distribution centered around 0.5 ($\alpha = \beta$). Here, the values in the middle of the interval are most likely to occur. The bottom-left plot demonstrates a left-skewed distribution(where $\alpha > \beta$). The values closer to the end of the interval are most likely to occur. The bottom-right plot illustrates a U-shaped distribution (both $\alpha, \beta < 1$). The density is highest at the endpoints of the interval and lowest around 0.5.
+The four plots in Figure (\ref{fig:betaplots}) illustrate Beta probability density function with various combinations of parameters $\alpha$ and $\beta$. We used \texttt{ggpplot2} and \texttt{patchwork} packages to craete and combine the graphs \citep{ggplot2, patchwork}.The top-left plot demonstrates a distribution skewed to the right (where $\beta > \alpha$), so there is a higher chance of observing values in the lower range of the interval [0,1]. The top-right plot demonstrates a symmetric distribution centered around 0.5 ($\alpha = \beta$). Here, the values in the middle of the interval are most likely to occur. The bottom-left plot demonstrates a left-skewed distribution(where $\alpha > \beta$). The values closer to the end of the interval are most likely to occur. The bottom-right plot illustrates a U-shaped distribution (both $\alpha, \beta < 1$). The density is highest at the endpoints of the interval and lowest around 0.5.
 
 
 \section{Properties}\label{sec:prop}
@@ -225,42 +174,22 @@ Beta distribution has a wide real-world application, such as for modeling death 
 \section{Appendix}
 
 %creating an xtable for the properties
-% latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Mon Mar 31 23:39:05 2025
-\begin{table}[ht]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-  \hline
-Distribution & Mean & Variance & Skewness & Excess.Kurtosis \\ 
-  \hline
-Beta(2,5) & 0.29 & 0.03 & 0.60 & -0.12 \\ 
-  Beta(5,5) & 0.50 & 0.02 & 0.00 & -0.46 \\ 
-  Beta(5,2) & 0.71 & 0.03 & -0.60 & -0.12 \\ 
-  Beta(0.5,0.5) & 0.50 & 0.12 & 0.00 & -1.50 \\ 
-   \hline
-\end{tabular}
-\caption{Statistical properties for various parameteres of Beta distribution} 
-\label{statsProperties.tab}
-\end{table}
+<<table1, echo = FALSE, results = 'asis', size='scriptsize'>>=
+library(xtable)
+stats.summary <- read.csv("stats_table.csv")
+table.stats <-xtable(stats.summary, label = "statsProperties.tab",
+                         caption = "Statistical properties for various parameteres of Beta distribution")
+align(table.stats) <- "c|c|c|c|c|c|"
+print(table.stats, include.rownames = F)
+@
 
-
-% latex table generated in R 4.4.2 by xtable 1.8-4 package
-% Mon Mar 31 23:39:05 2025
-\begin{table}[ht]
-\centering
-\begin{tabular}{|c|c|c|c|}
-  \hline
-Estimate & Bias & Precision & Mean.Squared.Error \\ 
-  \hline
-Alpha MOM & 0.08 & 1.83 & 0.55 \\ 
-  Beta MOM & 10.57 & 0.00 & 8303.00 \\ 
-  Alpha MLE & 0.07 & 2.13 & 0.47 \\ 
-  Beta MLE & 9.18 & 0.00 & 7118.73 \\ 
-   \hline
-\end{tabular}
-\caption{Bias, precision, and mean squared error for estimates} 
-\label{precision.tab}
-\end{table}
-
+<<table2, echo = FALSE, results = 'asis', size='scriptsize'>>=
+library(xtable)
+precision <- read.csv("table_precision.csv")
+table.precision <-xtable(precision, label = "precision.tab",
+                         caption = "Bias, precision, and mean squared error for estimates")
+align(table.precision) <- "c|c|c|c|c|"
+print(table.precision, include.rownames = F)
+@
 
 \end{document}
