@@ -592,6 +592,9 @@ hist.2022 <- ggplot(data = tibble(data.2022))+
   ylab("Density")+
   labs(color = "")
 
+#save graph for the writeup
+ggsave("deathdata.png", plot = hist.2022, width = 6, height = 6, dpi = 300)
+
 ################################################################################
 # TASK 8: which estimators should we use?
 ################################################################################

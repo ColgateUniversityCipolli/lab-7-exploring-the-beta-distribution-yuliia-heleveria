@@ -133,6 +133,14 @@ In our example, MLE has a smaller variance, higher precision, and lower bias com
 
 
 \section{Example}\label{sec:examp}
+As an example of application for the Beta distribution, consider country death rates. We draw the data set from the World Bank and convert the data to a rate of number of deaths per 1000 citizens to satisfy the interval $X \in [0,1]$.
+
+\begin{Figure}
+ \centering
+ \includegraphics[width=\linewidth]{deathdata.png}
+ \captionof{figure}{Histogram of death rates with MOM and MLE distributions superimposed}
+ \label{fig:deathdata}
+\end{Figure}
 
 
 \subsection{Methods Subsection}
